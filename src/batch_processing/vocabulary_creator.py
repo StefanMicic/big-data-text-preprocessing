@@ -8,10 +8,6 @@ class VocabCreator:
         self.path = path
         self.schema = StructType() \
             .add("sentiment", IntegerType(), True) \
-            .add("id", StringType(), True) \
-            .add("date", StringType(), True) \
-            .add("_", StringType(), True) \
-            .add("user", StringType(), True) \
             .add("text", StringType(), True)
         self.df = self.spark.read.csv(self.path, schema=self.schema)
 
@@ -37,8 +33,6 @@ class VocabCreator:
         words = words.filter(words["sum(dummy_col)"] > 20).orderBy(
             "sum(dummy_col)"
         )
-
-        words.show()
 
         words.repartition(1).write.format("com.databricks.spark.csv").save(
             "vocab.csv"
