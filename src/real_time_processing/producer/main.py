@@ -20,9 +20,9 @@ while True:
         print(e)
         time.sleep(3)
 
-f = open('../../data/train.json')
+f = open('train.json')
 json_data = json.load(f)
-data = pd.read_csv("../../data/train.csv")
+data = pd.read_csv("train.csv")
 for (index, row), i in zip_longest(data.iterrows(), json_data.values()):
     print("== csv ==>", TOPIC, index, row.text)
     producer.send(

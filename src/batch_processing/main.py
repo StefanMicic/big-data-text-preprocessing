@@ -1,3 +1,5 @@
+import os
+
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
 
@@ -11,18 +13,18 @@ def quiet_logs(sc):
 
 
 def main():
-    # HDFS_NAMENODE = os.environ["CORE_CONF_fs_defaultFS"]
+    HDFS_NAMENODE = os.environ["CORE_CONF_fs_defaultFS"]
 
-    conf = SparkConf().setAppName("example join").setMaster("local")
-    # .setMaster("spark://spark-master:7077")
+    conf = SparkConf().setAppName("example join").setMaster("spark://spark-master:7077")
+    # .setMaster("local")
 
     sc = SparkContext(conf=conf)
     spark = SparkSession(sc)
 
     quiet_logs(spark)
 
-    # vocabulary_creator = VocabCreator(HDFS_NAMENODE + "/home/output.csv", spark)
-    vocabulary_creator = VocabCreator("../data/train.csv", spark)
+    vocabulary_creator = VocabCreator(HDFS_NAMENODE + "/home/output.csv", spark)
+    # vocabulary_creator = VocabCreator("../data/train.csv", spark)
     vocabulary_creator.create_vocabulary()
     vocabulary_creator.clean_text()
 
